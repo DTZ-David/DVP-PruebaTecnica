@@ -15,6 +15,7 @@ class AppTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final bool enabled;
   final int maxLines;
+  final String? errorText; // 👈 NUEVO
 
   const AppTextField({
     super.key,
@@ -29,6 +30,7 @@ class AppTextField extends StatefulWidget {
     this.suffixIcon,
     this.enabled = true,
     this.maxLines = 1,
+    this.errorText, // 👈 NUEVO
   });
 
   @override
@@ -105,6 +107,7 @@ class _AppTextFieldState extends State<AppTextField> {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.md,
         ),
+        errorText: widget.errorText, // 👈 AQUI SE MUESTRA EL ERROR
       ),
     );
   }
