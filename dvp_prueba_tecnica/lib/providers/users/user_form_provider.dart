@@ -16,16 +16,21 @@ class UserFormNotifier extends _$UserFormNotifier {
 
   @override
   UserFormState build() {
-    _initializeStorage();
+    Future.microtask(() => _initializeStorage());
     return _loadInitialState();
   }
 
   /// Inicializa el servicio de almacenamiento
   Future<void> _initializeStorage() async {
-    state = UserFormStateManager.setLoading(state, true);
-    _storageService = UserStorageService();
-    await _storageService.initialize();
-    state = UserFormStateManager.setLoading(state, false);
+    try {
+      state = UserFormStateManager.setLoading(state, true);
+      _storageService = UserStorageService();
+      await _storageService.initialize();
+      state = UserFormStateManager.setLoading(state, false);
+    } catch (e) {
+      // En caso de error durante la inicialización, mantener el estado sin loading
+      state = UserFormStateManager.setLoading(state, false);
+    }
   }
 
   /// Carga el estado inicial desde datos temporales si existen
@@ -82,11 +87,8 @@ class UserFormNotifier extends _$UserFormNotifier {
         birthDate: state.birthDate!,
       );
 
-      // Guardar en estado global
+      // SOLO guardar en estado global, NO en almacenamiento
       ref.read(globalUserNotifierProvider.notifier).setUser(user);
-
-      // Guardar en almacenamiento local
-      await _storageService.saveUser(user);
 
       state = UserFormStateManager.setLoading(state, false);
       return user;

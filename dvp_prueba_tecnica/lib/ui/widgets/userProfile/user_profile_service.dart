@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import '../../../atomic_design/protons/colors.dart';
-import '../../../models/user_model.dart';
 import '../../../providers/users/global_user_provider.dart';
 import '../../../providers/users/users_list_provider.dart';
 
@@ -22,7 +20,6 @@ class UserProfileService {
     }
 
     try {
-      await _saveUserToLocal(currentUser);
       await ref.read(usersListNotifierProvider.notifier).addUser(currentUser);
 
       userNotifier.markProfileAsCompleted();
@@ -39,31 +36,6 @@ class UserProfileService {
         _showErrorSnackBar(context, 'Error al guardar perfil: $e');
       }
     }
-  }
-
-  Future<void> _saveUserToLocal(User user) async {
-    final box = await Hive.openBox('user_data');
-
-    final userJson = {
-      'id': user.id,
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'birthDate': user.birthDate.millisecondsSinceEpoch,
-      'addresses': user.addresses
-          .map((addr) => {
-                'id': addr.id,
-                'countryId': addr.countryId,
-                'departmentId': addr.departmentId,
-                'municipalityId': addr.municipalityId,
-                'countryName': addr.countryName,
-                'departmentName': addr.departmentName,
-                'municipalityName': addr.municipalityName,
-              })
-          .toList(),
-      'isCompleted': true,
-    };
-
-    await box.put('current_user', userJson);
   }
 
   void _showSuccessSnackBar(BuildContext context, String message) {

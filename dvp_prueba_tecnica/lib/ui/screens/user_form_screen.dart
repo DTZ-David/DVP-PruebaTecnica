@@ -13,19 +13,25 @@ class UserFormScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stepState = ref.watch(formStepNotifierProvider);
     final stepNotifier = ref.read(formStepNotifierProvider.notifier);
+
     return Scaffold(
       backgroundColor: AppColors.backgroundPrimary,
       appBar: AppBar(
         title: const Text('Crear Usuario'),
         backgroundColor: AppColors.white,
         elevation: 0,
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.neutral700,
+          ),
+          onPressed: () => _handleBackNavigation(context, ref),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // ✅ CORRECCIÓN: Eliminar el Consumer innecesario
               StepIndicator(
                 currentStep: stepState.currentStep,
                 totalSteps: stepState.totalSteps,
@@ -35,11 +41,11 @@ class UserFormScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: UserFormView(
                   onFormSubmitted: () {
-                    // Completar el formulario de usuario
+                    // Completar el formulario de usuario (esto actualiza currentStep a 2)
                     stepNotifier.completeUserForm();
 
-                    // Navegar al siguiente paso
-                    context.go('/address-form');
+                    // CAMBIO IMPORTANTE: Usar push en lugar de go para mantener el historial
+                    context.push('/address-form');
                   },
                 ),
               ),
@@ -48,5 +54,18 @@ class UserFormScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _handleBackNavigation(BuildContext context, WidgetRef ref) {
+    final stepNotifier = ref.read(formStepNotifierProvider.notifier);
+
+    // Resetear el stepper al volver al home
+    stepNotifier.resetSteps();
+
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go('/');
+    }
   }
 }

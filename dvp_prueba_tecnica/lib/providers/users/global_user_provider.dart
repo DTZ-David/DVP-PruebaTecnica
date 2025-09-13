@@ -13,11 +13,18 @@ class GlobalUserState with _$GlobalUserState {
     User? currentUser,
     @Default(false) bool isCreatingUser,
     @Default(false) bool hasCompletedProfile,
-    // ✅ NUEVO: Guardar datos del formulario temporalmente
     String? tempFirstName,
     String? tempLastName,
     DateTime? tempBirthDate,
     @Default(false) bool hasTemporaryData,
+    @Default([]) List<Address> tempSavedAddresses,
+    String? tempSelectedCountryId,
+    String? tempSelectedCountryName,
+    String? tempSelectedDepartmentId,
+    String? tempSelectedDepartmentName,
+    String? tempSelectedMunicipalityId,
+    String? tempSelectedMunicipalityName,
+    @Default(false) bool hasTemporaryAddressData,
   }) = _GlobalUserState;
 }
 
@@ -28,7 +35,6 @@ class GlobalUserNotifier extends _$GlobalUserNotifier {
     return const GlobalUserState();
   }
 
-  /// ✅ NUEVO: Guarda los datos del formulario temporalmente (sin crear usuario aún)
   void saveTemporaryFormData({
     required String firstName,
     required String lastName,
@@ -42,7 +48,6 @@ class GlobalUserNotifier extends _$GlobalUserNotifier {
     );
   }
 
-  /// ✅ NUEVO: Obtiene los datos temporales para rellenar el formulario
   ({String firstName, String lastName, DateTime? birthDate})
       getTemporaryData() {
     return (
@@ -52,12 +57,65 @@ class GlobalUserNotifier extends _$GlobalUserNotifier {
     );
   }
 
+  void saveTemporaryAddressData({
+    required List<Address> savedAddresses,
+    String? selectedCountryId,
+    String? selectedCountryName,
+    String? selectedDepartmentId,
+    String? selectedDepartmentName,
+    String? selectedMunicipalityId,
+    String? selectedMunicipalityName,
+  }) {
+    state = state.copyWith(
+      tempSavedAddresses: savedAddresses,
+      tempSelectedCountryId: selectedCountryId,
+      tempSelectedCountryName: selectedCountryName,
+      tempSelectedDepartmentId: selectedDepartmentId,
+      tempSelectedDepartmentName: selectedDepartmentName,
+      tempSelectedMunicipalityId: selectedMunicipalityId,
+      tempSelectedMunicipalityName: selectedMunicipalityName,
+      hasTemporaryAddressData: true,
+    );
+  }
+
+  ({
+    List<Address> savedAddresses,
+    String? selectedCountryId,
+    String? selectedCountryName,
+    String? selectedDepartmentId,
+    String? selectedDepartmentName,
+    String? selectedMunicipalityId,
+    String? selectedMunicipalityName,
+  }) getTemporaryAddressData() {
+    return (
+      savedAddresses: state.tempSavedAddresses,
+      selectedCountryId: state.tempSelectedCountryId,
+      selectedCountryName: state.tempSelectedCountryName,
+      selectedDepartmentId: state.tempSelectedDepartmentId,
+      selectedDepartmentName: state.tempSelectedDepartmentName,
+      selectedMunicipalityId: state.tempSelectedMunicipalityId,
+      selectedMunicipalityName: state.tempSelectedMunicipalityName,
+    );
+  }
+
+  void clearTemporaryAddressData() {
+    state = state.copyWith(
+      tempSavedAddresses: [],
+      tempSelectedCountryId: null,
+      tempSelectedCountryName: null,
+      tempSelectedDepartmentId: null,
+      tempSelectedDepartmentName: null,
+      tempSelectedMunicipalityId: null,
+      tempSelectedMunicipalityName: null,
+      hasTemporaryAddressData: false,
+    );
+  }
+
   /// Establece el usuario actual después de completar el formulario básico
   void setUser(User user) {
     state = state.copyWith(
       currentUser: user,
       isCreatingUser: false,
-      // ✅ LIMPIAR datos temporales después de crear el usuario
       tempFirstName: null,
       tempLastName: null,
       tempBirthDate: null,
@@ -94,7 +152,17 @@ class GlobalUserNotifier extends _$GlobalUserNotifier {
     if (state.currentUser == null) return;
 
     final updatedUser = state.currentUser!.copyWith(addresses: addresses);
-    state = state.copyWith(currentUser: updatedUser);
+    state = state.copyWith(
+      currentUser: updatedUser,
+      tempSavedAddresses: [],
+      tempSelectedCountryId: null,
+      tempSelectedCountryName: null,
+      tempSelectedDepartmentId: null,
+      tempSelectedDepartmentName: null,
+      tempSelectedMunicipalityId: null,
+      tempSelectedMunicipalityName: null,
+      hasTemporaryAddressData: false,
+    );
   }
 
   /// Marca el perfil como completado

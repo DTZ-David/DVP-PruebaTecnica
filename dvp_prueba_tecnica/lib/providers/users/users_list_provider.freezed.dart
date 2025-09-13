@@ -19,7 +19,7 @@ mixin _$UsersListState {
   List<User> get users => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get hasError => throw _privateConstructorUsedError;
-  bool get isInitialized => throw _privateConstructorUsedError; // ✅ NUEVO
+  bool get isInitialized => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of UsersListState
@@ -178,7 +178,6 @@ class _$UsersListStateImpl implements _UsersListState {
   @override
   @JsonKey()
   final bool isInitialized;
-// ✅ NUEVO
   @override
   final String? errorMessage;
 
@@ -237,7 +236,7 @@ abstract class _UsersListState implements UsersListState {
   @override
   bool get hasError;
   @override
-  bool get isInitialized; // ✅ NUEVO
+  bool get isInitialized;
   @override
   String? get errorMessage;
 

@@ -6,6 +6,7 @@ import '../../models/user_model.dart';
 import '../../providers/users/users_list_provider.dart';
 import '../../providers/users/global_user_provider.dart';
 import '../views/home_view.dart';
+import '../widgets/home/delete_user_dialog_widget.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -27,7 +28,9 @@ class HomeScreen extends ConsumerWidget {
   }
 
   void _startUserCreationFlow(BuildContext context, WidgetRef ref) {
-    ref.read(globalUserNotifierProvider.notifier).resetUser();
+    final globalUserNotifier = ref.read(globalUserNotifierProvider.notifier);
+    globalUserNotifier.resetUser();
+    globalUserNotifier.clearTemporaryAddressData();
     context.go('/user_form');
   }
 
@@ -46,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
 
     showDialog(
       context: context,
-      builder: (dialogContext) => _DeleteUserDialog(
+      builder: (dialogContext) => DeleteUserDialog(
         user: user,
         onConfirm: () async {
           Navigator.of(dialogContext).pop();
@@ -127,54 +130,6 @@ class _AddUserFAB extends StatelessWidget {
         'Nuevo Usuario',
         style: TextStyle(fontWeight: FontWeight.w600),
       ),
-    );
-  }
-}
-
-// Dialog de confirmación para eliminar usuario
-class _DeleteUserDialog extends StatelessWidget {
-  final User user;
-  final VoidCallback onConfirm;
-  final VoidCallback onCancel;
-
-  const _DeleteUserDialog({
-    required this.user,
-    required this.onConfirm,
-    required this.onCancel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      title: const Row(
-        children: [
-          Icon(Icons.warning_outlined, color: AppColors.error, size: 24),
-          SizedBox(width: 12),
-          Text('Eliminar Usuario'),
-        ],
-      ),
-      content: Text(
-        '¿Estás seguro de que deseas eliminar a "${user.firstName} ${user.lastName}"? Esta acción no se puede deshacer.',
-        style: const TextStyle(fontSize: 16),
-      ),
-      actions: [
-        TextButton(
-          onPressed: onCancel,
-          child: const Text(
-            'Cancelar',
-            style: TextStyle(color: AppColors.neutral600),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: onConfirm,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.error,
-            foregroundColor: AppColors.white,
-          ),
-          child: const Text('Eliminar'),
-        ),
-      ],
     );
   }
 }

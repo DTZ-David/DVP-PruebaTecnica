@@ -61,7 +61,7 @@ final userAgeProvider = AutoDisposeProvider<int>.internal(
 // ignore: unused_element
 typedef UserAgeRef = AutoDisposeProviderRef<int>;
 String _$globalUserNotifierHash() =>
-    r'f92da4d67b0b460f806b9ce41dd0af93c5354e47';
+    r'18ca66e8889678b0fe4466b34495c0dfc2a58964';
 
 /// See also [GlobalUserNotifier].
 @ProviderFor(GlobalUserNotifier)

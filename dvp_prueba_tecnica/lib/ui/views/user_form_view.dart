@@ -61,7 +61,6 @@ class _UserFormViewState extends ConsumerState<UserFormView> {
     final formState = ref.watch(userFormNotifierProvider);
     final formNotifier = ref.read(userFormNotifierProvider.notifier);
 
-    // ✅ NUEVO: Cargar datos del usuario existente
     final globalUserState = ref.watch(globalUserNotifierProvider);
     if (globalUserState.currentUser != null && !_hasInitializedControllers) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -89,7 +88,6 @@ class _UserFormViewState extends ConsumerState<UserFormView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title - ✅ Cambiar título si ya hay usuario
               AppText.heading3(globalUserState.currentUser != null
                   ? 'Editar Información Personal'
                   : 'Información Personal'),
@@ -157,7 +155,6 @@ class _UserFormViewState extends ConsumerState<UserFormView> {
                 variant: ButtonVariant.filled,
                 onPressed: formState.isValid && !formState.isLoading
                     ? () async {
-                        // ✅ Si ya existe usuario, actualizar. Si no, crear nuevo
                         if (globalUserState.currentUser != null) {
                           // Actualizar usuario existente
                           ref

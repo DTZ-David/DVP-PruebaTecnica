@@ -18,12 +18,20 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$GlobalUserState {
   User? get currentUser => throw _privateConstructorUsedError;
   bool get isCreatingUser => throw _privateConstructorUsedError;
-  bool get hasCompletedProfile =>
-      throw _privateConstructorUsedError; // ✅ NUEVO: Guardar datos del formulario temporalmente
+  bool get hasCompletedProfile => throw _privateConstructorUsedError;
   String? get tempFirstName => throw _privateConstructorUsedError;
   String? get tempLastName => throw _privateConstructorUsedError;
   DateTime? get tempBirthDate => throw _privateConstructorUsedError;
   bool get hasTemporaryData => throw _privateConstructorUsedError;
+  List<Address> get tempSavedAddresses => throw _privateConstructorUsedError;
+  String? get tempSelectedCountryId => throw _privateConstructorUsedError;
+  String? get tempSelectedCountryName => throw _privateConstructorUsedError;
+  String? get tempSelectedDepartmentId => throw _privateConstructorUsedError;
+  String? get tempSelectedDepartmentName => throw _privateConstructorUsedError;
+  String? get tempSelectedMunicipalityId => throw _privateConstructorUsedError;
+  String? get tempSelectedMunicipalityName =>
+      throw _privateConstructorUsedError;
+  bool get hasTemporaryAddressData => throw _privateConstructorUsedError;
 
   /// Create a copy of GlobalUserState
   /// with the given fields replaced by the non-null parameter values.
@@ -45,7 +53,15 @@ abstract class $GlobalUserStateCopyWith<$Res> {
       String? tempFirstName,
       String? tempLastName,
       DateTime? tempBirthDate,
-      bool hasTemporaryData});
+      bool hasTemporaryData,
+      List<Address> tempSavedAddresses,
+      String? tempSelectedCountryId,
+      String? tempSelectedCountryName,
+      String? tempSelectedDepartmentId,
+      String? tempSelectedDepartmentName,
+      String? tempSelectedMunicipalityId,
+      String? tempSelectedMunicipalityName,
+      bool hasTemporaryAddressData});
 
   $UserCopyWith<$Res>? get currentUser;
 }
@@ -72,6 +88,14 @@ class _$GlobalUserStateCopyWithImpl<$Res, $Val extends GlobalUserState>
     Object? tempLastName = freezed,
     Object? tempBirthDate = freezed,
     Object? hasTemporaryData = null,
+    Object? tempSavedAddresses = null,
+    Object? tempSelectedCountryId = freezed,
+    Object? tempSelectedCountryName = freezed,
+    Object? tempSelectedDepartmentId = freezed,
+    Object? tempSelectedDepartmentName = freezed,
+    Object? tempSelectedMunicipalityId = freezed,
+    Object? tempSelectedMunicipalityName = freezed,
+    Object? hasTemporaryAddressData = null,
   }) {
     return _then(_value.copyWith(
       currentUser: freezed == currentUser
@@ -101,6 +125,38 @@ class _$GlobalUserStateCopyWithImpl<$Res, $Val extends GlobalUserState>
       hasTemporaryData: null == hasTemporaryData
           ? _value.hasTemporaryData
           : hasTemporaryData // ignore: cast_nullable_to_non_nullable
+              as bool,
+      tempSavedAddresses: null == tempSavedAddresses
+          ? _value.tempSavedAddresses
+          : tempSavedAddresses // ignore: cast_nullable_to_non_nullable
+              as List<Address>,
+      tempSelectedCountryId: freezed == tempSelectedCountryId
+          ? _value.tempSelectedCountryId
+          : tempSelectedCountryId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedCountryName: freezed == tempSelectedCountryName
+          ? _value.tempSelectedCountryName
+          : tempSelectedCountryName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedDepartmentId: freezed == tempSelectedDepartmentId
+          ? _value.tempSelectedDepartmentId
+          : tempSelectedDepartmentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedDepartmentName: freezed == tempSelectedDepartmentName
+          ? _value.tempSelectedDepartmentName
+          : tempSelectedDepartmentName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedMunicipalityId: freezed == tempSelectedMunicipalityId
+          ? _value.tempSelectedMunicipalityId
+          : tempSelectedMunicipalityId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedMunicipalityName: freezed == tempSelectedMunicipalityName
+          ? _value.tempSelectedMunicipalityName
+          : tempSelectedMunicipalityName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasTemporaryAddressData: null == hasTemporaryAddressData
+          ? _value.hasTemporaryAddressData
+          : hasTemporaryAddressData // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -135,7 +191,15 @@ abstract class _$$GlobalUserStateImplCopyWith<$Res>
       String? tempFirstName,
       String? tempLastName,
       DateTime? tempBirthDate,
-      bool hasTemporaryData});
+      bool hasTemporaryData,
+      List<Address> tempSavedAddresses,
+      String? tempSelectedCountryId,
+      String? tempSelectedCountryName,
+      String? tempSelectedDepartmentId,
+      String? tempSelectedDepartmentName,
+      String? tempSelectedMunicipalityId,
+      String? tempSelectedMunicipalityName,
+      bool hasTemporaryAddressData});
 
   @override
   $UserCopyWith<$Res>? get currentUser;
@@ -161,6 +225,14 @@ class __$$GlobalUserStateImplCopyWithImpl<$Res>
     Object? tempLastName = freezed,
     Object? tempBirthDate = freezed,
     Object? hasTemporaryData = null,
+    Object? tempSavedAddresses = null,
+    Object? tempSelectedCountryId = freezed,
+    Object? tempSelectedCountryName = freezed,
+    Object? tempSelectedDepartmentId = freezed,
+    Object? tempSelectedDepartmentName = freezed,
+    Object? tempSelectedMunicipalityId = freezed,
+    Object? tempSelectedMunicipalityName = freezed,
+    Object? hasTemporaryAddressData = null,
   }) {
     return _then(_$GlobalUserStateImpl(
       currentUser: freezed == currentUser
@@ -191,6 +263,38 @@ class __$$GlobalUserStateImplCopyWithImpl<$Res>
           ? _value.hasTemporaryData
           : hasTemporaryData // ignore: cast_nullable_to_non_nullable
               as bool,
+      tempSavedAddresses: null == tempSavedAddresses
+          ? _value._tempSavedAddresses
+          : tempSavedAddresses // ignore: cast_nullable_to_non_nullable
+              as List<Address>,
+      tempSelectedCountryId: freezed == tempSelectedCountryId
+          ? _value.tempSelectedCountryId
+          : tempSelectedCountryId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedCountryName: freezed == tempSelectedCountryName
+          ? _value.tempSelectedCountryName
+          : tempSelectedCountryName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedDepartmentId: freezed == tempSelectedDepartmentId
+          ? _value.tempSelectedDepartmentId
+          : tempSelectedDepartmentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedDepartmentName: freezed == tempSelectedDepartmentName
+          ? _value.tempSelectedDepartmentName
+          : tempSelectedDepartmentName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedMunicipalityId: freezed == tempSelectedMunicipalityId
+          ? _value.tempSelectedMunicipalityId
+          : tempSelectedMunicipalityId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tempSelectedMunicipalityName: freezed == tempSelectedMunicipalityName
+          ? _value.tempSelectedMunicipalityName
+          : tempSelectedMunicipalityName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasTemporaryAddressData: null == hasTemporaryAddressData
+          ? _value.hasTemporaryAddressData
+          : hasTemporaryAddressData // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -205,7 +309,16 @@ class _$GlobalUserStateImpl implements _GlobalUserState {
       this.tempFirstName,
       this.tempLastName,
       this.tempBirthDate,
-      this.hasTemporaryData = false});
+      this.hasTemporaryData = false,
+      final List<Address> tempSavedAddresses = const [],
+      this.tempSelectedCountryId,
+      this.tempSelectedCountryName,
+      this.tempSelectedDepartmentId,
+      this.tempSelectedDepartmentName,
+      this.tempSelectedMunicipalityId,
+      this.tempSelectedMunicipalityName,
+      this.hasTemporaryAddressData = false})
+      : _tempSavedAddresses = tempSavedAddresses;
 
   @override
   final User? currentUser;
@@ -215,7 +328,6 @@ class _$GlobalUserStateImpl implements _GlobalUserState {
   @override
   @JsonKey()
   final bool hasCompletedProfile;
-// ✅ NUEVO: Guardar datos del formulario temporalmente
   @override
   final String? tempFirstName;
   @override
@@ -225,10 +337,35 @@ class _$GlobalUserStateImpl implements _GlobalUserState {
   @override
   @JsonKey()
   final bool hasTemporaryData;
+  final List<Address> _tempSavedAddresses;
+  @override
+  @JsonKey()
+  List<Address> get tempSavedAddresses {
+    if (_tempSavedAddresses is EqualUnmodifiableListView)
+      return _tempSavedAddresses;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tempSavedAddresses);
+  }
+
+  @override
+  final String? tempSelectedCountryId;
+  @override
+  final String? tempSelectedCountryName;
+  @override
+  final String? tempSelectedDepartmentId;
+  @override
+  final String? tempSelectedDepartmentName;
+  @override
+  final String? tempSelectedMunicipalityId;
+  @override
+  final String? tempSelectedMunicipalityName;
+  @override
+  @JsonKey()
+  final bool hasTemporaryAddressData;
 
   @override
   String toString() {
-    return 'GlobalUserState(currentUser: $currentUser, isCreatingUser: $isCreatingUser, hasCompletedProfile: $hasCompletedProfile, tempFirstName: $tempFirstName, tempLastName: $tempLastName, tempBirthDate: $tempBirthDate, hasTemporaryData: $hasTemporaryData)';
+    return 'GlobalUserState(currentUser: $currentUser, isCreatingUser: $isCreatingUser, hasCompletedProfile: $hasCompletedProfile, tempFirstName: $tempFirstName, tempLastName: $tempLastName, tempBirthDate: $tempBirthDate, hasTemporaryData: $hasTemporaryData, tempSavedAddresses: $tempSavedAddresses, tempSelectedCountryId: $tempSelectedCountryId, tempSelectedCountryName: $tempSelectedCountryName, tempSelectedDepartmentId: $tempSelectedDepartmentId, tempSelectedDepartmentName: $tempSelectedDepartmentName, tempSelectedMunicipalityId: $tempSelectedMunicipalityId, tempSelectedMunicipalityName: $tempSelectedMunicipalityName, hasTemporaryAddressData: $hasTemporaryAddressData)';
   }
 
   @override
@@ -249,7 +386,31 @@ class _$GlobalUserStateImpl implements _GlobalUserState {
             (identical(other.tempBirthDate, tempBirthDate) ||
                 other.tempBirthDate == tempBirthDate) &&
             (identical(other.hasTemporaryData, hasTemporaryData) ||
-                other.hasTemporaryData == hasTemporaryData));
+                other.hasTemporaryData == hasTemporaryData) &&
+            const DeepCollectionEquality()
+                .equals(other._tempSavedAddresses, _tempSavedAddresses) &&
+            (identical(other.tempSelectedCountryId, tempSelectedCountryId) ||
+                other.tempSelectedCountryId == tempSelectedCountryId) &&
+            (identical(other.tempSelectedCountryName, tempSelectedCountryName) ||
+                other.tempSelectedCountryName == tempSelectedCountryName) &&
+            (identical(
+                    other.tempSelectedDepartmentId, tempSelectedDepartmentId) ||
+                other.tempSelectedDepartmentId == tempSelectedDepartmentId) &&
+            (identical(other.tempSelectedDepartmentName,
+                    tempSelectedDepartmentName) ||
+                other.tempSelectedDepartmentName ==
+                    tempSelectedDepartmentName) &&
+            (identical(other.tempSelectedMunicipalityId,
+                    tempSelectedMunicipalityId) ||
+                other.tempSelectedMunicipalityId ==
+                    tempSelectedMunicipalityId) &&
+            (identical(other.tempSelectedMunicipalityName,
+                    tempSelectedMunicipalityName) ||
+                other.tempSelectedMunicipalityName ==
+                    tempSelectedMunicipalityName) &&
+            (identical(
+                    other.hasTemporaryAddressData, hasTemporaryAddressData) ||
+                other.hasTemporaryAddressData == hasTemporaryAddressData));
   }
 
   @override
@@ -261,7 +422,15 @@ class _$GlobalUserStateImpl implements _GlobalUserState {
       tempFirstName,
       tempLastName,
       tempBirthDate,
-      hasTemporaryData);
+      hasTemporaryData,
+      const DeepCollectionEquality().hash(_tempSavedAddresses),
+      tempSelectedCountryId,
+      tempSelectedCountryName,
+      tempSelectedDepartmentId,
+      tempSelectedDepartmentName,
+      tempSelectedMunicipalityId,
+      tempSelectedMunicipalityName,
+      hasTemporaryAddressData);
 
   /// Create a copy of GlobalUserState
   /// with the given fields replaced by the non-null parameter values.
@@ -281,15 +450,22 @@ abstract class _GlobalUserState implements GlobalUserState {
       final String? tempFirstName,
       final String? tempLastName,
       final DateTime? tempBirthDate,
-      final bool hasTemporaryData}) = _$GlobalUserStateImpl;
+      final bool hasTemporaryData,
+      final List<Address> tempSavedAddresses,
+      final String? tempSelectedCountryId,
+      final String? tempSelectedCountryName,
+      final String? tempSelectedDepartmentId,
+      final String? tempSelectedDepartmentName,
+      final String? tempSelectedMunicipalityId,
+      final String? tempSelectedMunicipalityName,
+      final bool hasTemporaryAddressData}) = _$GlobalUserStateImpl;
 
   @override
   User? get currentUser;
   @override
   bool get isCreatingUser;
   @override
-  bool
-      get hasCompletedProfile; // ✅ NUEVO: Guardar datos del formulario temporalmente
+  bool get hasCompletedProfile;
   @override
   String? get tempFirstName;
   @override
@@ -298,6 +474,22 @@ abstract class _GlobalUserState implements GlobalUserState {
   DateTime? get tempBirthDate;
   @override
   bool get hasTemporaryData;
+  @override
+  List<Address> get tempSavedAddresses;
+  @override
+  String? get tempSelectedCountryId;
+  @override
+  String? get tempSelectedCountryName;
+  @override
+  String? get tempSelectedDepartmentId;
+  @override
+  String? get tempSelectedDepartmentName;
+  @override
+  String? get tempSelectedMunicipalityId;
+  @override
+  String? get tempSelectedMunicipalityName;
+  @override
+  bool get hasTemporaryAddressData;
 
   /// Create a copy of GlobalUserState
   /// with the given fields replaced by the non-null parameter values.

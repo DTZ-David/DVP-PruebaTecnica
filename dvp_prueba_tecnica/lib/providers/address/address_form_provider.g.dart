@@ -7,7 +7,7 @@ part of 'address_form_provider.dart';
 // **************************************************************************
 
 String _$addressFormNotifierHash() =>
-    r'edb419531f874b9712c80b407c07f39d2547774a';
+    r'f8fd132567ac5dd4049fe6704ba5e4f98f427f9b';
 
 /// See also [AddressFormNotifier].
 @ProviderFor(AddressFormNotifier)

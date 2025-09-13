@@ -6,13 +6,18 @@ import 'package:go_router/go_router.dart';
 import '../../atomic_design/protons/colors.dart';
 import '../../providers/address/address_form_provider.dart';
 import '../../providers/users/global_user_provider.dart';
+import '../../providers/stepper/form_step_provider.dart';
 import '../views/address_form_view.dart';
 import '../widgets/widgets/app_scaffold_wrapper.dart';
+import '../widgets/widgets/step_indicator_widget.dart';
 
 class AddressFormScreen extends ConsumerWidget {
   const AddressFormScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final stepState = ref.watch(formStepNotifierProvider);
+
     return AppScaffoldWrapper(
       backgroundColor: AppColors.neutral100,
       appBar: AppBar(
@@ -23,13 +28,7 @@ class AddressFormScreen extends ConsumerWidget {
             Icons.arrow_back_ios,
             color: AppColors.neutral700,
           ),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go('/');
-            }
-          },
+          onPressed: () => _handleBackNavigation(context, ref),
         ),
         title: const Text(
           'Agregar Dirección',
@@ -44,35 +43,59 @@ class AddressFormScreen extends ConsumerWidget {
       child: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: AddressFormView(
-            onAddressAdded: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Row(
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: AppColors.white,
-                        size: 20,
+          child: Column(
+            children: [
+              // AGREGAR: StepIndicator para mantener consistencia visual
+              StepIndicator(
+                currentStep: stepState.currentStep,
+                totalSteps: stepState.totalSteps,
+                stepLabels: stepState.stepLabels,
+              ),
+              AddressFormView(
+                onAddressAdded: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: AppColors.white,
+                            size: 20,
+                          ),
+                          SizedBox(width: 8),
+                          Text('¡Dirección agregada correctamente!'),
+                        ],
                       ),
-                      SizedBox(width: 8),
-                      Text('¡Dirección agregada correctamente!'),
-                    ],
-                  ),
-                  backgroundColor: AppColors.success,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  margin: const EdgeInsets.all(16),
-                ),
-              );
-            },
-            onSaveAndContinue: () => _handleSaveAndContinue(context, ref),
+                      backgroundColor: AppColors.success,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      margin: const EdgeInsets.all(16),
+                    ),
+                  );
+                },
+                onSaveAndContinue: () => _handleSaveAndContinue(context, ref),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  void _handleBackNavigation(BuildContext context, WidgetRef ref) {
+    final stepNotifier = ref.read(formStepNotifierProvider.notifier);
+
+    // CAMBIO IMPORTANTE: Retroceder en el stepper antes de navegar
+    stepNotifier.previousStep(); // Esto cambiará currentStep de 2 a 1
+
+    if (context.canPop()) {
+      context.pop(); // Esto regresará a UserFormScreen
+    } else {
+      // Fallback: si no puede hacer pop, ir específicamente al paso anterior
+      context.go('/user_form');
+    }
   }
 
   /// Maneja el flujo de guardar y continuar
@@ -81,6 +104,7 @@ class AddressFormScreen extends ConsumerWidget {
     final addressState = ref.read(addressFormNotifierProvider);
     final addressNotifier = ref.read(addressFormNotifierProvider.notifier);
     final globalUserNotifier = ref.read(globalUserNotifierProvider.notifier);
+    final stepNotifier = ref.read(formStepNotifierProvider.notifier);
 
     try {
       // 1. Si hay una dirección actual válida sin guardar, guardarla primero
@@ -106,12 +130,15 @@ class AddressFormScreen extends ConsumerWidget {
       // 4. Transferir todas las direcciones al usuario global
       globalUserNotifier.updateUserAddresses(savedAddresses);
 
-      // 5. Mostrar mensaje de éxito
+      // 5. CAMBIO IMPORTANTE: Completar el paso de dirección en el stepper
+      stepNotifier.completeAddressForm(); // Esto actualizará currentStep a 3
+
+      // 6. Mostrar mensaje de éxito
       _showSuccessSnackBar(context,
           '${savedAddresses.length} direcciones guardadas en tu perfil');
 
-      // 6. Navegar al perfil
-      context.go('/profile');
+      // 7. CAMBIO IMPORTANTE: Usar push para mantener el historial de navegación
+      context.push('/profile');
     } catch (e) {
       _showErrorSnackBar(context, 'Error inesperado: ${e.toString()}');
     }

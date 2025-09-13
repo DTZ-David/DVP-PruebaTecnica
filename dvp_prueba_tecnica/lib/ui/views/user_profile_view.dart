@@ -6,7 +6,6 @@ import '../../atomic_design/protons/spacing.dart';
 import '../../providers/users/global_user_provider.dart';
 import '../widgets/userProfile/addresses_section.dart';
 import '../widgets/userProfile/profile_header_card.dart';
-import '../widgets/widgets/step_indicator_widget.dart';
 
 class UserProfileView extends ConsumerWidget {
   final VoidCallback? onAddNewAddress;
@@ -38,11 +37,6 @@ class UserProfileView extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const StepIndicator(
-          currentStep: 3,
-          totalSteps: 3,
-          stepLabels: ['Información Personal', 'Dirección', 'Confirmación'],
-        ),
         const SizedBox(height: AppSpacing.lg),
         ProfileHeaderCard(
           user: user,

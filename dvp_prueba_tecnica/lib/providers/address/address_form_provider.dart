@@ -4,6 +4,7 @@ import '../../services/address_form_service.dart';
 import '../../utils/address_form_validator.dart';
 import 'address_form_state_manager.dart';
 import 'address_form_loading_helper.dart';
+import '../users/global_user_provider.dart';
 
 part 'address_form_provider.g.dart';
 
@@ -12,8 +13,50 @@ class AddressFormNotifier extends _$AddressFormNotifier {
   @override
   AddressFormState build() {
     const initialState = AddressFormState();
-    Future.microtask(() => loadCountries());
+    Future.microtask(() => _initializeWithTemporaryData());
     return initialState;
+  }
+
+  Future<void> _initializeWithTemporaryData() async {
+    await loadCountries();
+
+    // Recuperar datos temporales del globalUserProvider
+    final globalUserNotifier = ref.read(globalUserNotifierProvider.notifier);
+    final tempData = globalUserNotifier.getTemporaryAddressData();
+
+    if (tempData.savedAddresses.isNotEmpty) {
+      // Restaurar direcciones guardadas
+      state = state.copyWith(savedAddresses: tempData.savedAddresses);
+    }
+
+    // Restaurar selecciones actuales si existen
+    if (tempData.selectedCountryId != null) {
+      state = AddressFormStateManager.selectCountry(
+        state,
+        tempData.selectedCountryId!,
+        tempData.selectedCountryName!,
+      );
+      await _loadDepartments(tempData.selectedCountryId!);
+
+      if (tempData.selectedDepartmentId != null) {
+        state = AddressFormStateManager.selectDepartment(
+          state,
+          tempData.selectedDepartmentId!,
+          tempData.selectedDepartmentName!,
+        );
+        await _loadMunicipalities(tempData.selectedDepartmentId!);
+
+        if (tempData.selectedMunicipalityId != null) {
+          state = AddressFormStateManager.selectMunicipality(
+            state,
+            tempData.selectedMunicipalityId!,
+            tempData.selectedMunicipalityName!,
+          );
+        }
+      }
+    }
+
+    _validateForm();
   }
 
   /// Carga los países disponibles
@@ -27,6 +70,7 @@ class AddressFormNotifier extends _$AddressFormNotifier {
         AddressFormStateManager.selectCountry(state, countryId, countryName);
     _loadDepartments(countryId);
     _validateForm();
+    _saveTemporaryData();
   }
 
   /// Carga departamentos según el país seleccionado
@@ -40,6 +84,7 @@ class AddressFormNotifier extends _$AddressFormNotifier {
         state, departmentId, departmentName);
     _loadMunicipalities(departmentId);
     _validateForm();
+    _saveTemporaryData();
   }
 
   /// Carga municipios según el departamento seleccionado
@@ -53,12 +98,26 @@ class AddressFormNotifier extends _$AddressFormNotifier {
     state = AddressFormStateManager.selectMunicipality(
         state, municipalityId, municipalityName);
     _validateForm();
+    _saveTemporaryData();
   }
 
   /// Valida que todos los campos requeridos estén seleccionados
   void _validateForm() {
     final isValid = AddressFormValidator.validateForm(state);
     state = state.copyWith(isValid: isValid);
+  }
+
+  void _saveTemporaryData() {
+    final globalUserNotifier = ref.read(globalUserNotifierProvider.notifier);
+    globalUserNotifier.saveTemporaryAddressData(
+      savedAddresses: state.savedAddresses,
+      selectedCountryId: state.selectedCountryId,
+      selectedCountryName: state.selectedCountryName,
+      selectedDepartmentId: state.selectedDepartmentId,
+      selectedDepartmentName: state.selectedDepartmentName,
+      selectedMunicipalityId: state.selectedMunicipalityId,
+      selectedMunicipalityName: state.selectedMunicipalityName,
+    );
   }
 
   /// Guarda la dirección actual
@@ -87,6 +146,7 @@ class AddressFormNotifier extends _$AddressFormNotifier {
 
       state = AddressFormStateManager.addSavedAddress(state, newAddress);
       _clearForm();
+      _saveTemporaryData();
       return true;
     } catch (e) {
       state = state.copyWith(
@@ -105,12 +165,15 @@ class AddressFormNotifier extends _$AddressFormNotifier {
   /// Elimina una dirección guardada
   void removeAddress(String addressId) {
     state = AddressFormStateManager.removeSavedAddress(state, addressId);
+    _saveTemporaryData();
   }
 
   /// Reinicia completamente el estado del formulario
   void reset() {
     state = const AddressFormState();
     loadCountries();
+    final globalUserNotifier = ref.read(globalUserNotifierProvider.notifier);
+    globalUserNotifier.clearTemporaryAddressData();
   }
 
   /// Reintenta cargar datos en caso de error

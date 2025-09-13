@@ -13,14 +13,14 @@ class UsersListState with _$UsersListState {
     @Default([]) List<User> users,
     @Default(false) bool isLoading,
     @Default(false) bool hasError,
-    @Default(false) bool isInitialized, // ✅ NUEVO
+    @Default(false) bool isInitialized,
     String? errorMessage,
   }) = _UsersListState;
 }
 
 @riverpod
 class UsersListNotifier extends _$UsersListNotifier {
-  Box? _usersBox; // ✅ Cambiar a nullable
+  Box? _usersBox;
 
   @override
   UsersListState build() {
@@ -28,7 +28,6 @@ class UsersListNotifier extends _$UsersListNotifier {
     return const UsersListState();
   }
 
-  // ✅ NUEVO: Método para asegurar inicialización
   Future<void> _ensureInitialized() async {
     if (_usersBox == null || !_usersBox!.isOpen) {
       _usersBox = await Hive.openBox('users_list');
@@ -39,7 +38,7 @@ class UsersListNotifier extends _$UsersListNotifier {
     state = state.copyWith(isLoading: true, hasError: false);
 
     try {
-      await _ensureInitialized(); // ✅ Asegurar inicialización
+      await _ensureInitialized();
 
       final usersData = _usersBox!.values.toList();
 
@@ -56,7 +55,7 @@ class UsersListNotifier extends _$UsersListNotifier {
       state = state.copyWith(
         users: users,
         isLoading: false,
-        isInitialized: true, // ✅ Marcar como inicializado
+        isInitialized: true,
       );
     } catch (e) {
       state = state.copyWith(
@@ -95,7 +94,7 @@ class UsersListNotifier extends _$UsersListNotifier {
 
   Future<void> addUser(User user) async {
     try {
-      await _ensureInitialized(); // ✅ Asegurar inicialización
+      await _ensureInitialized();
 
       final userJson = {
         'id': user.id,
@@ -130,7 +129,7 @@ class UsersListNotifier extends _$UsersListNotifier {
 
   Future<void> deleteUser(String userId) async {
     try {
-      await _ensureInitialized(); // ✅ Asegurar inicialización
+      await _ensureInitialized();
       await _usersBox!.delete(userId);
       await loadUsers(); // Recargar lista
     } catch (e) {
@@ -143,7 +142,7 @@ class UsersListNotifier extends _$UsersListNotifier {
 
   Future<void> updateUser(User user) async {
     try {
-      await _ensureInitialized(); // ✅ Asegurar inicialización
+      await _ensureInitialized();
 
       final userJson = {
         'id': user.id,

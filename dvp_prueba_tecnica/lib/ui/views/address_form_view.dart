@@ -5,7 +5,6 @@ import '../../providers/address/address_form_provider.dart';
 import '../widgets/address/address_counter_widget.dart';
 import '../widgets/address/address_form_card.dart';
 import '../widgets/address/saved_addresses_list.dart';
-import '../widgets/widgets/step_indicator_widget.dart';
 
 class AddressFormView extends ConsumerWidget {
   final VoidCallback? onAddressAdded;
@@ -24,11 +23,6 @@ class AddressFormView extends ConsumerWidget {
 
     return Column(
       children: [
-        const StepIndicator(
-          currentStep: 2,
-          totalSteps: 3,
-          stepLabels: ['Información Personal', 'Dirección', 'Confirmación'],
-        ),
         const SizedBox(height: AppSpacing.lg),
         if (addressState.savedAddresses.isNotEmpty)
           AddressCounterWidget(count: addressState.savedAddresses.length),
