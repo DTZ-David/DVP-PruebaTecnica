@@ -91,9 +91,8 @@ class AddressFormScreen extends ConsumerWidget {
     stepNotifier.previousStep(); // Esto cambiará currentStep de 2 a 1
 
     if (context.canPop()) {
-      context.pop(); // Esto regresará a UserFormScreen
+      context.pop();
     } else {
-      // Fallback: si no puede hacer pop, ir específicamente al paso anterior
       context.go('/user_form');
     }
   }
